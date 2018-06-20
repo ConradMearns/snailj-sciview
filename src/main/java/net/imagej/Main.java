@@ -42,13 +42,6 @@ public final class Main {
 		// prevent instantiation of utility class
 	}
 
-	/** @deprecated Use {@link ImageJ#launch} instead. */
-	@Deprecated
-	public static ImageJ launch(final String... args) {
-		final ImageJ ij = new ImageJ();
-		ij.launch(args);
-		return ij;
-	}
 
 	public static void main(final String... args) {
 		final ImageJ ij = new ImageJ();
