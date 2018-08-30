@@ -10,11 +10,11 @@
 	</parent>
 
 	<groupId>sc.iview</groupId>
-	<artifactId>minimal-sciview</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>snailj-sciview</artifactId>
+	<version>0.1.5-SNAPSHOT</version>
 
-	<name>minimal-sciview</name>
-	<description>This is a minimal SciView project.</description>
+	<name>snailj-sciview</name>
+	<description>This is a SciView plugin.</description>
 	<url>http://sc.iview.sc/</url>
 	<inceptionYear>2018</inceptionYear>
 	<organization>
@@ -29,6 +29,14 @@
 	</licenses>
 
 	<developers>
+		<developer>
+			<id>ConradMearns</id>
+			<name>ConradMearns</name>
+			<url>http://conrads.website</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 		<developer>
 			<id>kephale</id>
 			<name>Kyle Harrington</name>
@@ -60,16 +68,17 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:git:git://github.com/kephale/minimal-sciview</connection>
-		<developerConnection>scm:git:git@github.com:kephale/minimal-sciview</developerConnection>
+		<connection>scm:git:git://github.com/ConradMearns/snailj-sciview</connection>
+		<developerConnection>scm:git:git@github.com:ConradMearns/snailj-sciview</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/kephale/minimal-sciview</url>
+		<url>https://github.com/ConradMearns/snailj-sciview</url>
 	</scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/kephale/minimal-sciview/issues</url>
+		<url>https://github.com/ConradMearns/snailj-sciview/issues</url>
 	</issueManagement>
 	<ciManagement>
+		<!-- TODO Need change?-->
 		<system>Travis CI</system>
 		<url>https://travis-ci.org/kephale/minimal-sciview</url>
 	</ciManagement>
@@ -80,7 +89,7 @@
 
 		<license.licenseName>bsd_2</license.licenseName>
 		<license.copyrightOwners>Board of Regents of the University of Idaho.</license.copyrightOwners>
-		<license.projectName>Minimal sciview.</license.projectName>
+		<license.projectName>snailj</license.projectName>
 
 		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
 		<releaseProfiles>deploy-to-imagej</releaseProfiles>
