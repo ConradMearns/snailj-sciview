@@ -109,7 +109,7 @@
 			<artifactId>sciview</artifactId>
 			<version>0.1.2</version>
 		</dependency>
-
+		
 		<!-- ImageJ dependencies -->
 		<dependency>
 			<groupId>net.imagej</groupId>
@@ -130,6 +130,10 @@
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>imagej</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
 		</dependency>
 
 		<!-- SCIFIO dependencies -->

@@ -27,13 +27,21 @@
  * #L%
  */
 package sc.iview.commands.demo;
+
 import static sc.iview.commands.MenuWeights.DEMO;
 import static sc.iview.commands.MenuWeights.DEMO_SEASHELLS;
 
 import sc.iview.vector.DoubleVector3;
 
-import net.imagej.mesh.Mesh;
+// TODO
+import net.imagej.ops.geom.geom3d.DefaultVoxelization3D;
+import net.imagej.ops.topology.BoxCount;
+
+import net.imagej.ops.OpService;
 import net.imagej.mesh.nio.BufferMesh;
+import net.imagej.mesh.Mesh;
+// import net.imagej.ops.*;
+
 
 import org.scijava.command.Command;
 import org.scijava.io.IOService;
@@ -44,9 +52,21 @@ import org.scijava.plugin.Plugin;
 
 import sc.iview.SciView;
 
-import cleargl.GLVector;
 import graphics.scenery.Material;
 import graphics.scenery.Node;
+import cleargl.GLVector;
+
+import java.util.Random;
+
+import java.util.List;
+
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.ValuePair;
+
+import ij.measure.CurveFitter;
+
+import java.net.URL;
 
 /**
  * Seashell generator, based on the paper by Jorge Picado
@@ -157,37 +177,42 @@ public class SeashellDemo implements Command {
     @Parameter
     private SciView sciView;
 
+    @Parameter
+    private OpService op;
+
+    @Parameter(label = "Choose Preset", choices = {CUSTOM, TORUS, BOAT_EAR_MOON, WENTLETRAP, TURRITELLA, ANCILLA, ARGONAUTA}, persist = false)
+    private String preset = BOAT_EAR_MOON;
+
     /**
       * Quantity of rotations the seashell makes
       */
-    @Parameter(label = "Turns")
+    @Parameter(label = "Spiral Turns")
     private double turns;
 
     /**
       * Resolution of segments per turn along spiral
       */
-    @Parameter(label = "Segments per Spiral Turn")
+    @Parameter(label = "Spiral Turn Resolution")
     private int segmentsPerTurn = 64;
 
     /**
       * Resolution of segments of the generating curve. Effectively makes an
       * ellipse into an N-gon where cseg is N
       */
-    @Parameter(label = "Segments per Curve")
+    @Parameter(label = "Generating Curve Resolution")
     private int cseg = 64;
 
-    /**
-      * 14 parameters outlined by the referenced paper.
-      */
+    @Parameter(label = "Generating Curve Randomness Multiplier")
+    private double bumpiness = 0;
 
     private double rotation;
-
-    @Parameter(label = "Choose Preset", choices = {CUSTOM, TORUS, BOAT_EAR_MOON, WENTLETRAP, TURRITELLA, ANCILLA, ARGONAUTA}, persist = false)
-    private String preset = CUSTOM;
 
     @Parameter(label = "Use Radians")
     private boolean inRadians;
 
+    /**
+      * 14 parameters outlined by the referenced paper.
+      */
     @Parameter
     private double D, A, alpha, beta, phi, mu, omega, a, b, L, P, W1, W2, N;
 
@@ -232,7 +257,8 @@ public class SeashellDemo implements Command {
       * @param s The angle, in radians, that maps to a point on an ellipse
       */
     private double C_ellipse(double s) {
-        return Math.pow(Math.pow(Math.cos(s)/a, 2) + Math.pow(Math.sin(s)/b, 2), -0.5);
+      Random rand = new Random();
+      return Math.pow(Math.pow(Math.cos(s)/a, 2) + Math.pow(Math.sin(s)/b, 2), -0.5) + (rand.nextDouble()*bumpiness);
     }
 
     /**
@@ -293,8 +319,37 @@ public class SeashellDemo implements Command {
 
         updateParams();
 
-        Mesh m = (Mesh)seaShellToMesh(makeShellPoints());
-        addMesh(0.0f, 0.0f, 0.0f, m);
+        BufferMesh m = seaShellToMesh(makeShellPoints());
+        addMesh(0.0f, 0.0f, 0.0f, (Mesh)m);
+
+        log.info("Fractal Dimension of new shell: " + getFractalDimension(m));
+
+
+    }
+
+    /**
+     * Estimate the Fractal Dimension of a given Mesh
+     * Collects boxCount data from the OpService, and then determines the slope
+     * using CurveFitter
+     */
+    private double getFractalDimension(Mesh m){
+      RandomAccessibleInterval voxelizedMesh = op.geom().voxelization(m);
+      List<ValuePair<DoubleType, DoubleType>> toCurveFit = op.topology().boxCount(voxelizedMesh);
+
+      double datax[] = new double[toCurveFit.size()];
+      double datay[] = new double[toCurveFit.size()];
+
+      for (int i = 0; i < toCurveFit.size(); i++) {
+        datax[i] = toCurveFit.get(i).getA().getRealDouble();
+        datay[i] = toCurveFit.get(i).getB().getRealDouble();
+      }
+
+      CurveFitter cf = new CurveFitter(datax, datay);
+      cf.doFit(CurveFitter.STRAIGHT_LINE);
+
+      log.debug("CurveFitter result: "+cf.getResultString());
+
+      return cf.getParams()[1];
     }
 
     private void addMesh(float x, float y, float z, Mesh m) {
