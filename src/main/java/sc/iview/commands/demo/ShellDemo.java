@@ -29,7 +29,7 @@
 package sc.iview.commands.demo;
 
 import static sc.iview.commands.MenuWeights.DEMO;
-import static sc.iview.commands.MenuWeights.DEMO_SEASHELLS;
+import static sc.iview.commands.MenuWeights.DEMO_SHELLS;
 
 import sc.iview.vector.DoubleVector3;
 
@@ -69,17 +69,17 @@ import ij.measure.CurveFitter;
 import java.net.URL;
 
 /**
- * Seashell generator, based on the paper by Jorge Picado
+ * Shell generator, based on the paper by Jorge Picado
  * http://www.mat.uc.pt/~picado/conchas/eng/article.pdf
  *
  * @author Conrad Mearns
  * @author Kyle Harrington
  */
-@Plugin(type = Command.class, label = "Seashell Demo", menuRoot = "SciView",
+@Plugin(type = Command.class, label = "Shell Demo", menuRoot = "SciView",
         menu = { @Menu(label = "Demo", weight = DEMO),
-                 @Menu(label = "Seashell", weight = DEMO_SEASHELLS) })
+                 @Menu(label = "Shell", weight = DEMO_SHELLS) })
 
-public class SeashellDemo implements Command {
+public class ShellDemo implements Command {
     //D, A, alpha, beta, phi, mu, omega, a, b, L, P, W1, W2, N;
     private final String CUSTOM = "Custom";
     private final String TORUS = "Torus";
@@ -184,7 +184,7 @@ public class SeashellDemo implements Command {
     private String preset = BOAT_EAR_MOON;
 
     /**
-      * Quantity of rotations the seashell makes
+      * Quantity of rotations the shell makes
       */
     @Parameter(label = "Spiral Turns")
     private double turns;
@@ -319,7 +319,7 @@ public class SeashellDemo implements Command {
 
         updateParams();
 
-        BufferMesh m = seaShellToMesh(makeShellPoints());
+        BufferMesh m = shellToMesh(makeShellPoints());
         addMesh(0.0f, 0.0f, 0.0f, (Mesh)m);
 
         log.info("Fractal Dimension of new shell: " + getFractalDimension(m));
@@ -393,7 +393,7 @@ public class SeashellDemo implements Command {
       return shell;
     }
 
-    public BufferMesh seaShellToMesh(DoubleVector3[][] shell) {
+    public BufferMesh shellToMesh(DoubleVector3[][] shell) {
         int n = shell.length;
         int m = shell[0].length;
 

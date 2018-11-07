@@ -1,8 +1,8 @@
 # snailj-sciview
-Mathematical seashell generator based on the [paper by Jorge Picado](http://www.mat.uc.pt/~picado/conchas/eng/article.pdf)
+Mathematical shell generator based on the [paper by Jorge Picado](http://www.mat.uc.pt/~picado/conchas/eng/article.pdf)
 
 # Seashell Generation
-In SciView under Demo -> Seashell, simply select a preset and click okay.
+In SciView under Demo -> Shell, simply select a preset and click okay.
 - __Spiral Turns__: Amount of rotations to generate
 - __Spiral Turn Resolution__: Resolution for underlying helical shape
 - __Generating Curve Resolution__: Resolution for the "tube" that becomes the shell surface
@@ -12,6 +12,7 @@ Options __D__ to __N__ are best explained in Picado's paper, but will eventually
 
 # Fractal Dimensionality
 The Fractal Dimension of a generated shell is outputted to the log after creation
+__I am slowly working on moving fractal dimensionality code to another project__
 
 # LICENSING
 
