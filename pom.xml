@@ -107,9 +107,9 @@
 		<dependency>
 			<groupId>sc.iview</groupId>
 			<artifactId>sciview</artifactId>
-			<version>0.1.2</version>
+			<version>0.1.6</version>
 		</dependency>
-		
+
 		<!-- ImageJ dependencies -->
 		<dependency>
 			<groupId>net.imagej</groupId>

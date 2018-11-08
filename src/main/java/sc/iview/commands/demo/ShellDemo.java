@@ -77,17 +77,17 @@ import java.net.URL;
  */
 @Plugin(type = Command.class, label = "Shell Demo", menuRoot = "SciView",
         menu = { @Menu(label = "Demo", weight = DEMO),
-                 @Menu(label = "Shell", weight = DEMO_SHELLS) })
+                 @Menu(label = "Generate Shell", weight = DEMO_SHELLS) })
 
 public class ShellDemo implements Command {
     //D, A, alpha, beta, phi, mu, omega, a, b, L, P, W1, W2, N;
-    private final String CUSTOM = "Custom";
-    private final String TORUS = "Torus";
-    private final String BOAT_EAR_MOON = "Boat Ear Moon";
-    private final String WENTLETRAP = "Precious Wentletrap";
-    private final String TURRITELLA = "Turritella";
-    private final String ANCILLA = "Ancilla";
-    private final String ARGONAUTA = "Argonauta";
+    private final String CUSTOM         = "Custom";
+    private final String TORUS          = "Torus";
+    private final String BOAT_EAR_MOON  = "Boat Ear Moon";
+    private final String WENTLETRAP     = "Precious Wentletrap";
+    private final String TURRITELLA     = "Turritella";
+    private final String ANCILLA        = "Ancilla";
+    private final String ARGONAUTA      = "Argonauta";
 
     private double[][] presets = {
       {

@@ -9,4 +9,5 @@ target
 /app/ImageJ.app/
 nb-configuration.xml
 /scripts/
-/stl
+/stl/
+/pic/
