@@ -68,6 +68,9 @@ import ij.measure.CurveFitter;
 
 import java.net.URL;
 
+import java.io.PrintWriter;
+import java.io.IOException;
+
 /**
  * Shell generator, based on the paper by Jorge Picado
  * http://www.mat.uc.pt/~picado/conchas/eng/article.pdf
@@ -316,20 +319,70 @@ public class ShellDemo implements Command {
           W1 = Math.toRadians(W1);
           W2 = Math.toRadians(W2);
         }
-
         updateParams();
+        // addMesh(0.0f, 0.0f, 0.0f, (Mesh)m); // TODO needed?
 
-        BufferMesh m = shellToMesh(makeShellPoints());
-        addMesh(0.0f, 0.0f, 0.0f, (Mesh)m);
+        /*
+        Data collection routine
+        - File output
+        - File name
 
-        log.info("Fractal Dimension of new shell: " + getFractalDimension(m));
+        - Meta
+        - Preset name
+        - Parameter interval
+        - Fractal Dimension
+        - Curve data
+        */
 
+        String pathname = "/home/snail/code/snailj-sciview/tests/";
+        String test = "DvP-0";
+        String filename = test+"-"+preset+".csv";
+
+
+        double int_start = 1.0;
+        double int_end   = 100.0;
+        double int_delta = 1.0;
+
+
+        BufferMesh m;
+
+        try {
+          log.info("Creating "+filename);
+
+          PrintWriter out = new PrintWriter(pathname+filename);
+          out.println("PRESET, "+preset);
+          out.println("turns, fractal dimension");
+
+          log.info("Looping: "+int_start+"->"+int_end);
+
+          for(double i = int_start; i < int_end; i += int_delta){
+            // TODO Vaue redefination
+            turns = i;
+            m = shellToMesh(makeShellPoints());
+
+            double fd = getFractalDimension(m);
+
+            log.info(i+", "+fd);
+            out.println(i+", "+fd);
+          }
+
+          out.flush();
+          out.close();
+        } catch(IOException e) {
+          log.info("problems");
+          e.printStackTrace();
+        }
+
+        log.info("Closed "+filename);
+
+
+        // log.info("Fractal Dimension of new shell: " + getFractalDimension(m));
 
     }
 
     /**
      * Estimate the Fractal Dimension of a given Mesh
-     * Collects boxCount data from the OpService, and then determines the slope
+     * Collects boxCount data from the OpService+" "+and then determines the slope
      * using CurveFitter
      */
     private double getFractalDimension(Mesh m){
