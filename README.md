@@ -12,7 +12,7 @@ Options __D__ to __N__ are best explained in Picado's paper, but will eventually
 
 # Fractal Dimensionality
 The Fractal Dimension of a generated shell is outputted to the log after creation
-__I am slowly working on moving fractal dimensionality code to another project__
+__Secondary command will be working as soon as the Parameter is recognized__
 
 # LICENSING
 

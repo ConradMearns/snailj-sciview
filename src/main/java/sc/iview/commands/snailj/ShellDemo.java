@@ -26,22 +26,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package sc.iview.commands.demo;
+package sc.iview.commands.snailj;
 
-import static sc.iview.commands.MenuWeights.DEMO;
-import static sc.iview.commands.MenuWeights.DEMO_SHELLS;
+import static sc.iview.commands.MenuWeights.SNAILJ;
+import static sc.iview.commands.MenuWeights.SNAILJ_SHELLS;
 
 import sc.iview.vector.DoubleVector3;
 
-// TODO
 import net.imagej.ops.geom.geom3d.DefaultVoxelization3D;
 import net.imagej.ops.topology.BoxCount;
 
 import net.imagej.ops.OpService;
 import net.imagej.mesh.nio.BufferMesh;
 import net.imagej.mesh.Mesh;
-// import net.imagej.ops.*;
-
 
 import org.scijava.command.Command;
 import org.scijava.io.IOService;
@@ -75,11 +72,13 @@ import java.net.URL;
  * @author Conrad Mearns
  * @author Kyle Harrington
  */
-@Plugin(type = Command.class, label = "Shell Demo", menuRoot = "SciView",
-        menu = { @Menu(label = "Demo", weight = DEMO),
-                 @Menu(label = "Generate Shell", weight = DEMO_SHELLS) })
+
+@Plugin(type = Command.class, label = "SnailJ Shell Generator", menuRoot = "SciView",
+        menu = { @Menu(label = "SnailJ", weight = SNAILJ),
+                 @Menu(label = "Generate Shell", weight = SNAILJ_SHELLS) })
 
 public class ShellDemo implements Command {
+    public static BufferMesh REMOVETHISGROSSASSMESHTHING; //TODO
     //D, A, alpha, beta, phi, mu, omega, a, b, L, P, W1, W2, N;
     private final String CUSTOM         = "Custom";
     private final String TORUS          = "Torus";
@@ -205,8 +204,6 @@ public class ShellDemo implements Command {
     @Parameter(label = "Generating Curve Randomness Multiplier")
     private double bumpiness = 0;
 
-    private double rotation;
-
     @Parameter(label = "Use Radians")
     private boolean inRadians;
 
@@ -320,11 +317,8 @@ public class ShellDemo implements Command {
         updateParams();
 
         BufferMesh m = shellToMesh(makeShellPoints());
+        REMOVETHISGROSSASSMESHTHING = m;//TODO
         addMesh(0.0f, 0.0f, 0.0f, (Mesh)m);
-
-        log.info("Fractal Dimension of new shell: " + getFractalDimension(m));
-
-
     }
 
     /**
@@ -373,12 +367,13 @@ public class ShellDemo implements Command {
 
     public DoubleVector3[][] makeShellPoints() {
       int hseg = (int)(segmentsPerTurn * turns);
-      rotation = turns * 2.0f * Math.PI;
+
+      double hstep = (2.0f * Math.PI) / segmentsPerTurn;
 
       DoubleVector3[][] shell = new DoubleVector3[hseg][cseg];
 
       for(int i = 0; i < hseg; i++) {
-          double theta = i * rotation / hseg;
+          double theta = hstep * i;
           for(int j = 0; j < cseg; j++) {
               double s = j * (2 * Math.PI) / cseg;
 
