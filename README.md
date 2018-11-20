@@ -23,3 +23,11 @@ for the full text of the license, see
 
 For the list of ImageJ developers and contributors, see
 [the parent POM](https://github.com/imagej/pom-imagej/blob/master/pom.xml).
+
+# TODO list
+ - [x] SnailJ root menu
+ - [x] Add command for fractal dimension analysis (FDA)
+   - [x] connect sciview mesh to frac-dim commands
+ - [ ] Settings for FDA
+   - [ ] voxelization min - max
+ - [ ] Shell fitting (using GA)
