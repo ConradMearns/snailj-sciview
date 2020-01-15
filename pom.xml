@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>22.3.0</version>
+		<version>27.0.1</version>
 		<relativePath />
 	</parent>
 
@@ -91,6 +91,9 @@
 		<license.copyrightOwners>Board of Regents of the University of Idaho.</license.copyrightOwners>
 		<license.projectName>snailj</license.projectName>
 
+		<sciview.version>2f4df2f</sciview.version>
+		<scenery.version>7d3b58a</scenery.version>
+
 		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
 		<releaseProfiles>deploy-to-imagej</releaseProfiles>
 	</properties>
@@ -111,7 +114,21 @@
 		<dependency>
 			<groupId>sc.iview</groupId>
 			<artifactId>sciview</artifactId>
-			<version>2f4df2f</version>
+			<version>${sciview.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>graphics.scenery</groupId>
+			<artifactId>scenery</artifactId>
+			<version>${scenery.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.clearvolume</groupId>
+			<artifactId>cleargl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.clearcontrol</groupId>
+			<artifactId>coremem</artifactId>
+			<version>0.4.6</version>
 		</dependency>
 
 		<!-- ImageJ dependencies -->
@@ -429,7 +446,6 @@
 				<dependency>
 					<groupId>net.imagej</groupId>
 					<artifactId>imagej</artifactId>
-					<version>${project.version}</version>
 					<classifier>sources</classifier>
 				</dependency>
 

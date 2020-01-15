@@ -31,6 +31,9 @@ package sc.iview.commands.snailj;
 import static sc.iview.commands.MenuWeights.SNAILJ;
 import static sc.iview.commands.MenuWeights.SNAILJ_SHELLS;
 
+import jdk.nashorn.tools.Shell;
+import net.imagej.ImageJ;
+import org.scijava.command.CommandService;
 import sc.iview.vector.DoubleVector3;
 
 import net.imagej.ops.geom.geom3d.DefaultVoxelization3D;
@@ -53,6 +56,7 @@ import graphics.scenery.Material;
 import graphics.scenery.Node;
 import cleargl.GLVector;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import java.util.List;
@@ -412,4 +416,21 @@ public class ShellDemo implements Command {
 
         return mesh;
     }
+
+    public static void main(final String... args) {
+		//final ImageJ ij = new ImageJ();
+		//ij.launch(args);
+        SciView sciView = SciView.createSciView();
+
+        CommandService commandService = sciView.getScijavaContext().service(CommandService.class);
+        HashMap<String, Object> argmap = new HashMap<>();
+        argmap.put("preset", "Boat Ear Moon");
+        argmap.put("turns", 10);
+        argmap.put("segmentsPerTurn", 64);
+        argmap.put("cseg", 64);
+        argmap.put("bumpiness", 0);
+
+
+        commandService.run(ShellDemo.class, false, argmap);
+	}
 }
