@@ -83,4 +83,5 @@ public final class MenuWeights {
 
     public static final double SNAILJ_SHELLS = 0;
     public static final double SNAILJ_FRACDIM = 1;
+    public static final double SNAILJ_GA = 2;
 }

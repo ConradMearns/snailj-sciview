@@ -40,7 +40,6 @@ import net.imagej.mesh.Mesh;
 
 import org.scijava.command.Command;
 import org.scijava.io.IOService;
-import org.scijava.log.LogService;
 import org.scijava.plugin.Menu;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -56,6 +55,9 @@ import net.imglib2.util.ValuePair;
 
 import ij.measure.CurveFitter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Fractal dimension analyzer
  *
@@ -67,8 +69,7 @@ import ij.measure.CurveFitter;
 
 public class FractalDimensionDemo implements Command {
 
-    @Parameter
-    private LogService log;
+    final static Logger logger = LoggerFactory.getLogger(FractalDimensionDemo.class);
 
     @Parameter
     private SciView sciView;
@@ -87,12 +88,10 @@ public class FractalDimensionDemo implements Command {
       if(active != null && active instanceof graphics.scenery.Mesh) {
         Mesh m = MeshConverter.toImageJ( (graphics.scenery.Mesh)active );
         double fd = getFractalDimension(m);
-        log.info("Fractal Dimension: " + fd);
+        logger.info("Fractal Dimension: " + fd);
       } else {
-        log.info("Active node is not a mesh");
+        logger.info("Active node is not a mesh");
       }
-      // double fd = getFractalDimension((Mesh)REMOVETHISGROSSASSMESHTHING);
-      // log.info("Fractal Dimension of new shell: " + fd);
 
     }
 
@@ -111,7 +110,7 @@ public class FractalDimensionDemo implements Command {
       CurveFitter cf = new CurveFitter(datax, datay);
       cf.doFit(CurveFitter.STRAIGHT_LINE);
 
-      log.debug("CurveFitter result: "+cf.getResultString());
+      logger.debug("CurveFitter result: "+cf.getResultString());
 
       return cf.getParams()[1];
     }

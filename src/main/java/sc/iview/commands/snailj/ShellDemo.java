@@ -31,13 +31,8 @@ package sc.iview.commands.snailj;
 import static sc.iview.commands.MenuWeights.SNAILJ;
 import static sc.iview.commands.MenuWeights.SNAILJ_SHELLS;
 
-import jdk.nashorn.tools.Shell;
-import net.imagej.ImageJ;
 import org.scijava.command.CommandService;
 import sc.iview.vector.DoubleVector3;
-
-import net.imagej.ops.geom.geom3d.DefaultVoxelization3D;
-import net.imagej.ops.topology.BoxCount;
 
 import net.imagej.ops.OpService;
 import net.imagej.mesh.nio.BufferMesh;
@@ -45,7 +40,6 @@ import net.imagej.mesh.Mesh;
 
 import org.scijava.command.Command;
 import org.scijava.io.IOService;
-import org.scijava.log.LogService;
 import org.scijava.plugin.Menu;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -67,7 +61,8 @@ import net.imglib2.util.ValuePair;
 
 import ij.measure.CurveFitter;
 
-import java.net.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Shell generator, based on the paper by Jorge Picado
@@ -82,6 +77,8 @@ import java.net.URL;
                  @Menu(label = "Generate Shell", weight = SNAILJ_SHELLS) })
 
 public class ShellDemo implements Command {
+
+    final static Logger logger = LoggerFactory.getLogger(ShellDemo.class);
     public static BufferMesh REMOVETHISGROSSASSMESHTHING; //TODO
     //D, A, alpha, beta, phi, mu, omega, a, b, L, P, W1, W2, N;
     private final String CUSTOM         = "Custom";
@@ -175,9 +172,6 @@ public class ShellDemo implements Command {
     private IOService io;
 
     @Parameter
-    private LogService log;
-
-    @Parameter
     private SciView sciView;
 
     @Parameter
@@ -234,6 +228,8 @@ public class ShellDemo implements Command {
         case BOAT_EAR_MOON:
           presetIndex++;
         }
+
+        logger.info("Using preset " + preset);
 
         if(!preset.equals(CUSTOM)){
           D = presets[presetIndex][0];
@@ -318,10 +314,11 @@ public class ShellDemo implements Command {
           W2 = Math.toRadians(W2);
         }
 
+        logger.info("Running command");
+
         updateParams();
 
         BufferMesh m = shellToMesh(makeShellPoints());
-        REMOVETHISGROSSASSMESHTHING = m;//TODO
         addMesh(0.0f, 0.0f, 0.0f, (Mesh)m);
     }
 
@@ -345,7 +342,7 @@ public class ShellDemo implements Command {
       CurveFitter cf = new CurveFitter(datax, datay);
       cf.doFit(CurveFitter.STRAIGHT_LINE);
 
-      log.debug("CurveFitter result: "+cf.getResultString());
+      logger.debug("CurveFitter result: "+cf.getResultString());
 
       return cf.getParams()[1];
     }
